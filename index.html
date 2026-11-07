@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ห้องทดลองการแยกสาร | วิทยาศาสตร์ ม.2</title>
+<style>
+:root{--navy:#16324f;--blue:#2878b5;--teal:#168b83;--gold:#f2b84b;--ink:#203044;--muted:#607286;--paper:#f4f8fb;--line:#dce6ee}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(125deg,#e4f2ff 0%,#e7f6ed 52%,#fff4c9 100%);font-family:Tahoma,"Noto Sans Thai",sans-serif;color:var(--ink);line-height:1.6}
+.wrap{max-width:1050px;margin:auto;padding:22px 16px 42px}
+header{background:linear-gradient(120deg,#16324f,#2878b5);color:white;padding:25px;border-radius:20px;margin-bottom:18px}
+header .tag{font-size:13px;letter-spacing:.4px;color:#d9efff}h1{font-size:clamp(24px,4vw,36px);margin:4px 0}header p{margin:5px 0 0;color:#e6f3fc}
+.panel{background:white;border:1px solid var(--line);border-radius:16px;padding:18px;margin:14px 0;box-shadow:0 5px 18px #16324f0a}
+h2{font-size:21px;color:var(--navy);margin:0 0 10px}h3{font-size:17px;margin:0 0 8px;color:var(--navy)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.objective{background:#edf6fb;padding:12px;border-radius:12px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+button,select,input{font:inherit}button{border:0;border-radius:10px;padding:10px 14px;background:var(--blue);color:white;cursor:pointer;min-height:42px}
+button.secondary{background:#e8f0f6;color:var(--navy)}button.active{background:var(--teal);color:white}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid #f2b84b;outline-offset:2px}
+label{display:block;font-weight:600;margin:8px 0 4px}select,input[type=range]{width:100%}select{padding:9px;border:1px solid var(--line);border-radius:9px;background:white}
+.lab{display:grid;grid-template-columns:minmax(0,1fr) minmax(250px,.85fr);gap:16px;align-items:center}
+.stage{background:#f5f9fc;border:1px solid var(--line);border-radius:14px;padding:12px;min-height:245px}
+svg{width:100%;height:auto;display:block}.readout{background:#edf7f5;border-radius:12px;padding:12px;margin-top:10px}
+.small{font-size:13px;color:var(--muted)}.step{padding:9px 12px;border-left:4px solid var(--gold);background:#fff9eb;border-radius:7px;margin:7px 0}
+canvas{width:100%;height:185px;border:1px solid var(--line);border-radius:10px;background:white}
+.quiz-q{padding:13px;border:1px solid var(--line);border-radius:12px;margin:10px 0}.quiz-q p{font-weight:600;margin:0 0 8px}
+.quiz-q label{font-weight:400;display:flex;gap:8px;align-items:flex-start;margin:7px 0}.quiz-q input{margin-top:5px}
+.feedback{font-weight:600;margin-top:7px}.good{color:#087b52}.bad{color:#b54737}
+.hidden{display:none}.pill{display:inline-block;padding:3px 9px;background:#e6f3f9;color:#1d628b;border-radius:99px;font-size:12px}
+footer{text-align:center;color:var(--muted);font-size:12px;margin-top:18px}
+@media(max-width:700px){.lab{grid-template-columns:1fr}.wrap{padding:12px}.panel{padding:14px}header{padding:20px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+ <div class="tag">SCIENCE LAB • ระดับชั้นมัธยมศึกษาปีที่ 2</div>
+ <h1>🔬 ห้องทดลองการแยกสาร</h1>
+ <p>เรียนรู้ผ่านการทดลองจำลอง สังเกตการเปลี่ยนแปลง และวิเคราะห์วิธีแยกสารให้เหมาะสม</p>
+</header>
+
+<section class="panel">
+ <h2>🎯 เป้าหมายการเรียนรู้</h2>
+ <div class="grid">
+  <div class="objective"><b>ทดลอง</b><br>เลือกวิธีแยกสารและปรับเงื่อนไขการทดลองได้</div>
+  <div class="objective"><b>สังเกต</b><br>สังเกตการเปลี่ยนแปลงของสารระหว่างการแยก</div>
+  <div class="objective"><b>วิเคราะห์</b><br>อธิบายหลักการและเลือกวิธีแยกสารในชีวิตประจำวันได้</div>
+ </div>
+ <p class="small">คำแนะนำ: เลือกฐานทดลองด้านล่าง แล้วปรับตัวแปรเพื่อดูผลจำลองแบบทันที</p>
+</section>
+
+<div class="tabs" role="tablist" aria-label="เลือกฐานทดลอง">
+ <button class="active" data-tab="filter" role="tab" aria-selected="true">1. การกรอง</button>
+ <button class="secondary" data-tab="evap" role="tab" aria-selected="false">2. การระเหยแห้ง</button>
+ <button class="secondary" data-tab="chroma" role="tab" aria-selected="false">3. โครมาโทกราฟี</button>
+</div>
+
+<section id="filter" class="panel experiment">
+ <h2>ฐานทดลองที่ 1 : การกรอง <span class="pill">ของแข็งไม่ละลายในของเหลว</span></h2>
+ <p>สถานการณ์: แยกทรายออกจากน้ำ โดยใช้กระดาษกรองซึ่งมีรูพรุนเล็ก ๆ ให้น้ำผ่านได้ แต่กักอนุภาคทรายไว้</p>
+ <div class="lab">
+  <div>
+   <label for="sand">ปริมาณทรายในตัวอย่าง</label>
+   <input id="sand" type="range" min="10" max="90" value="55">
+   <div class="small">ปริมาณทราย: <b id="sandVal">55</b>%</div>
+   <label for="pore">ขนาดรูพรุนของตัวกรอง</label>
+   <input id="pore" type="range" min="1" max="10" value="4">
+   <div class="small">ขนาดรูพรุน: <b id="poreVal">4</b> (หน่วยจำลอง)</div>
+   <div class="readout" id="filterResult" aria-live="polite"></div>
+  </div>
+  <div class="stage">
+   <svg viewBox="0 0 420 245" role="img" aria-label="ภาพจำลองการกรองทรายออกจากน้ำ">
+    <path d="M75 22 L345 22 L285 112 L135 112 Z" fill="#e9f2f7" stroke="#56758b" stroke-width="3"/>
+    <path id="mixWater" d="M100 45 L320 45 L280 105 L140 105 Z" fill="#d4b46b" opacity=".85"/>
+    <g id="sandDots" fill="#8b5e32"></g>
+    <path d="M135 112 L285 112 L250 155 L170 155 Z" fill="#f8fbfd" stroke="#56758b" stroke-width="3"/>
+    <path id="filterPaper" d="M135 112 L285 112 L250 155 L170 155 Z" fill="#fff" stroke="#168b83" stroke-width="2"/>
+    <g id="retained" fill="#8b5e32"></g>
+    <path d="M170 155 L185 215 L235 215 L250 155" fill="none" stroke="#56758b" stroke-width="3"/>
+    <path id="filtrate" d="M187 185 L233 185 L238 212 L182 212 Z" fill="#80c9e8" opacity=".8"/>
+    <text x="210" y="15" text-anchor="middle" font-size="12" fill="#203044">สารผสม</text>
+    <text x="210" y="145" text-anchor="middle" font-size="11" fill="#168b83">กระดาษกรอง</text>
+    <text x="210" y="235" text-anchor="middle" font-size="12" fill="#203044">น้ำที่กรองได้</text>
+   </svg>
+  </div>
+ </div>
+ <div class="step"><b>สังเกต:</b> ทรายสะสมบนกระดาษกรอง ส่วนน้ำไหลผ่านลงสู่ภาชนะด้านล่าง</div>
+ <canvas id="filterChart" width="700" height="185" aria-label="กราฟแสดงปริมาณทรายที่ผ่านตัวกรอง"></canvas>
+ <p class="small">กราฟจำลองแสดงสัดส่วนทรายที่ผ่านตัวกรองเมื่อเปลี่ยนขนาดรูพรุน (ค่าประมาณเพื่อการเรียนรู้ ไม่ใช่ผลการทดลองจริง)</p>
+</section>
+
+<section id="evap" class="panel experiment hidden">
+ <h2>ฐานทดลองที่ 2 : การระเหยแห้ง <span class="pill">สารละลาย</span></h2>
+ <p>สถานการณ์: แยกเกลือออกจากน้ำเกลือ โดยให้ความร้อนจนตัวทำละลายระเหยออก เหลือเกลือเป็นของแข็ง</p>
+ <div class="lab">
+  <div>
+   <label for="heat">ระดับความร้อน</label>
+   <input id="heat" type="range" min="0" max="100" value="35">
+   <div class="small">ระดับความร้อน: <b id="heatVal">35</b>%</div>
+   <label for="time">เวลาการให้ความร้อน</label>
+   <input id="time" type="range" min="0" max="100" value="25">
+   <div class="small">เวลาจำลอง: <b id="timeVal">25</b> หน่วย</div>
+   <div class="readout" id="evapResult" aria-live="polite"></div>
+  </div>
+  <div class="stage">
+   <svg viewBox="0 0 420 245" role="img" aria-label="ภาพจำลองการระเหยน้ำเกลือ">
+    <path d="M95 70 Q210 105 325 70 L300 185 Q210 220 120 185 Z" fill="#e8edf1" stroke="#56758b" stroke-width="3"/>
+    <path id="saltWater" d="M112 105 Q210 132 308 105 L292 175 Q210 200 128 175 Z" fill="#83c9e8"/>
+    <g id="saltCrystals" fill="#fff" stroke="#d6ad49" stroke-width="1"></g>
+    <g id="steam" stroke="#8ab8c9" stroke-width="3" fill="none" stroke-linecap="round"></g>
+    <path d="M145 208 Q210 190 275 208" stroke="#d77b36" stroke-width="6" fill="none"/>
+    <text x="210" y="30" text-anchor="middle" font-size="13" fill="#203044">ไอน้ำลอยออก</text>
+    <text x="210" y="235" text-anchor="middle" font-size="12" fill="#203044">ให้ความร้อนแก่สารละลาย</text>
+   </svg>
+  </div>
+ </div>
+ <div class="step"><b>สังเกต:</b> เมื่อน้ำระเหยออก ปริมาณน้ำลดลงและเกลือเริ่มตกผลึก</div>
+ <canvas id="evapChart" width="700" height="185" aria-label="กราฟปริมาณน้ำและเกลือคงเหลือ"></canvas>
+ <p class="small">กราฟแสดงปริมาณน้ำที่เหลือและเกลือที่ได้จากการจำลอง</p>
+</section>
+
+<section id="chroma" class="panel experiment hidden">
+ <h2>ฐานทดลองที่ 3 : โครมาโทกราฟีแบบกระดาษ <span class="pill">สารสีผสม</span></h2>
+ <p>สถานการณ์: แยกสีที่ผสมอยู่ในหมึกปากกา โดยอาศัยการเคลื่อนที่ของสารสีบนกระดาษที่แตกต่างกัน</p>
+ <div class="lab">
+  <div>
+   <label for="solvent">ระดับการเคลื่อนที่ของตัวทำละลาย</label>
+   <input id="solvent" type="range" min="10" max="100" value="65">
+   <div class="small">ระยะตัวทำละลาย: <b id="solventVal">65</b>%</div>
+   <label for="ink">ชนิดหมึกจำลอง</label>
+   <select id="ink"><option value="multi">หมึกสีดำ (มีหลายองค์ประกอบ)</option><option value="blue">หมึกสีน้ำเงิน</option><option value="red">หมึกสีแดง</option></select>
+   <div class="readout" id="chromaResult" aria-live="polite"></div>
+  </div>
+  <div class="stage">
+   <svg viewBox="0 0 420 245" role="img" aria-label="ภาพจำลองแยกสีด้วยกระดาษโครมาโทกราฟี">
+    <rect x="125" y="12" width="170" height="220" rx="5" fill="#fff" stroke="#9aabb8" stroke-width="2"/>
+    <rect id="solventFront" x="127" y="90" width="166" height="12" fill="#9ed9ed" opacity=".7"/>
+    <path d="M127 195 H293" stroke="#b38a58" stroke-width="2" stroke-dasharray="5 4"/>
+    <circle cx="210" cy="195" r="5" fill="#263e91"/>
+    <g id="colorBands"></g>
+    <text x="210" y="242" text-anchor="middle" font-size="11" fill="#203044">จุดเริ่มต้นของหมึก</text>
+   </svg>
+  </div>
+ </div>
+ <div class="step"><b>สังเกต:</b> สารสีแต่ละชนิดเคลื่อนที่ได้ระยะต่างกัน จึงแยกออกเป็นแถบสี</div>
+ <canvas id="chromaChart" width="700" height="185" aria-label="กราฟเปรียบเทียบระยะทางการเคลื่อนที่ของสารสี"></canvas>
+ <p class="small">กราฟแสดงระยะทางสัมพัทธ์ของแถบสีในแบบจำลอง</p>
+</section>
+
+<section class="panel">
+ <h2>🧠 สรุปความรู้</h2>
+ <div class="grid">
+  <div><h3>การกรอง</h3><p>เหมาะกับสารผสมเนื้อผสมที่มีของแข็งไม่ละลายในของเหลว เช่น ทรายกับน้ำ</p></div>
+  <div><h3>การระเหยแห้ง</h3><p>ใช้แยกของแข็งที่ละลายอยู่ในของเหลว เช่น เกลือจากน้ำเกลือ</p></div>
+  <div><h3>โครมาโทกราฟี</h3><p>ใช้แยกองค์ประกอบของสารผสม เช่น สีหลายชนิดในหมึก</p></div>
+ </div>
+ <p class="small">หมายเหตุ: การเลือกวิธีแยกสารต้องพิจารณาสมบัติของสารแต่ละชนิด เช่น ขนาดอนุภาค การละลาย และการเคลื่อนที่ไปกับตัวทำละลาย</p>
+</section>
+
+<section class="panel" id="quiz">
+ <h2>📝 แบบประเมินท้ายกิจกรรม (3 ข้อ)</h2>
+ <p>เลือกคำตอบที่ถูกต้อง แล้วกด “ตรวจคำตอบ” เพื่อดูคะแนนและเฉลย</p>
+ <div class="quiz-q"><p>1. หากต้องการแยกทรายออกจากน้ำ ควรใช้วิธีใด</p>
+  <label><input type="radio" name="q1" value="a"> การกรอง</label><label><input type="radio" name="q1" value="b"> การระเหยแห้ง</label><label><input type="radio" name="q1" value="c"> โครมาโทกราฟี</label><div class="feedback" id="f1"></div></div>
+ <div class="quiz-q"><p>2. การทำนาเกลืออาศัยหลักการใดเป็นสำคัญ</p>
+  <label><input type="radio" name="q2" value="a"> ใช้แม่เหล็กดูดเกลือ</label><label><input type="radio" name="q2" value="b"> ระเหยน้ำออกจนเหลือเกลือ</label><label><input type="radio" name="q2" value="c"> กรองเกลือออกจากน้ำ</label><div class="feedback" id="f2"></div></div>
+ <div class="quiz-q"><p>3. เหตุใดสีในหมึกจึงแยกเป็นหลายแถบบนกระดาษโครมาโทกราฟี</p>
+  <label><input type="radio" name="q3" value="a"> สีทุกชนิดมีขนาดเท่ากัน</label><label><input type="radio" name="q3" value="b"> กระดาษทำให้หมึกแข็งตัว</label><label><input type="radio" name="q3" value="c"> สารสีเคลื่อนที่ไปกับตัวทำละลายได้ต่างกัน</label><div class="feedback" id="f3"></div></div>
+ <button id="checkQuiz">ตรวจคำตอบ</button> <button class="secondary" id="resetQuiz">ทำใหม่</button>
+ <div id="score" class="readout" aria-live="polite">คะแนนจะแสดงที่นี่</div>
+</section>
+<footer>สื่อการเรียนรู้วิทยาศาสตร์ ม.2 • แบบจำลองเพื่อการศึกษา • ควรปฏิบัติการทดลองจริงภายใต้การดูแลของครู</footer>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+function drawBars(canvas,labels,values,max=100){
+ const c=$(canvas),ctx=c.getContext('2d'),w=c.width,h=c.height;ctx.clearRect(0,0,w,h);
+ ctx.font='16px Tahoma';ctx.fillStyle='#607286';ctx.strokeStyle='#dce6ee';
+ for(let i=0;i<=4;i++){let y=18+i*(h-48)/4;ctx.beginPath();ctx.moveTo(45,y);ctx.lineTo(w-12,y);ctx.stroke();ctx.fillText(String(Math.round(max-i*max/4)),8,y+5)}
+ const bw=Math.min(90,(w-90)/labels.length*.55),gap=(w-90)/labels.length;
+ values.forEach((v,i)=>{let bh=Math.max(0,(h-52)*v/max),x=45+gap*i+(gap-bw)/2,y=h-30-bh;ctx.fillStyle=['#2878b5','#168b83','#f2b84b','#8a79bd'][i%4];ctx.fillRect(x,y,bw,bh);ctx.fillStyle='#203044';ctx.textAlign='center';ctx.fillText(labels[i],x+bw/2,h-8);ctx.fillText(Math.round(v),x+bw/2,y-5)});ctx.textAlign='left';
+}
+function updateFilter(){
+ let sand=+$('sand').value,pore=+$('pore').value;$('sandVal').textContent=sand;$('poreVal').textContent=pore;
+ let pass=Math.max(0,Math.min(100,(pore-2)*7));let retained=100-pass;
+ $('filterResult').innerHTML=`ทรายคงอยู่บนกระดาษกรองประมาณ <b>${retained}%</b><br>ทรายผ่านตัวกรองประมาณ <b>${pass}%</b><br><span class="small">${pore<=2?'รูพรุนเล็กมาก อนุภาคทรายส่วนใหญ่ถูกกักไว้':pore<7?'รูพรุนมีขนาดปานกลาง อาจมีอนุภาคบางส่วนผ่าน':'รูพรุนค่อนข้างใหญ่ อนุภาคบางส่วนอาจผ่านได้'}</span>`;
+ $('sandDots').innerHTML='';$('retained').innerHTML='';
+ for(let i=0;i<Math.round(sand/3);i++){let x=115+(i*37%185),y=48+(i*19%45);$('sandDots').innerHTML+=`<circle cx="${x}" cy="${y}" r="3"/>`}
+ for(let i=0;i<Math.round(retained/8);i++)$('retained').innerHTML+=`<circle cx="${155+(i*17%105)}" cy="${119+(i*7%25)}" r="3"/>`;
+ drawBars('filterChart',['ทรายผ่าน','ทรายถูกกัก'],[pass,retained]);
+}
+function updateEvap(){
+ let heat=+$('heat').value,time=+$('time').value;$('heatVal').textContent=heat;$('timeVal').textContent=time;
+ let evaporated=Math.min(100,heat*time/55),water=100-evaporated;
+ $('evapResult').innerHTML=`น้ำระเหยไปประมาณ <b>${Math.round(evaporated)}%</b><br>น้ำคงเหลือ <b>${Math.round(water)}%</b><br>เกลือเริ่มตกผลึกเมื่อจำลองการระเหยมากกว่า 45%`;
+ $('saltWater').setAttribute('d',`M112 ${105+evaporated*.65} Q210 ${132+evaporated*.55} 308 ${105+evaporated*.65} L292 ${175+evaporated*.1} Q210 ${200+evaporated*.1} 128 ${175+evaporated*.1} Z`);
+ $('saltWater').setAttribute('opacity',Math.max(.12,water/100));
+ let crystals=$('saltCrystals');crystals.innerHTML='';for(let i=0;i<Math.max(0,Math.round((evaporated-35)/4));i++)crystals.innerHTML+=`<rect x="${145+(i*23%125)}" y="${170-(i*11%22)}" width="7" height="7" transform="rotate(45 ${148+(i*23%125)} ${173-(i*11%22)})"/>`;
+ let steam=$('steam');steam.innerHTML='';for(let i=0;i<Math.round(heat/18);i++){let x=160+i*20;steam.innerHTML+=`<path d="M${x} 65 q-12 -12 0 -24 q12 -12 0 -24"/>`}
+ drawBars('evapChart',['น้ำคงเหลือ','น้ำระเหย','เกลือ'],[water,evaporated,100],100);
+}
+function updateChroma(){
+ let dist=+$('solvent').value,type=$('ink').value;$('solventVal').textContent=dist;
+ let colors=type==='multi'?['#2878b5','#168b83','#e0a32c','#8055a5']:type==='blue'?['#2878b5','#73a9d7']:['#d94b48','#ef9a72'];
+ let ratios=type==='multi'?[.78,.58,.38,.22]:type==='blue'?[.72,.42]:[.65,.3];
+ $('colorBands').innerHTML='';let vals=[];
+ ratios.forEach((r,i)=>{let y=195-dist*r*1.65;vals.push(dist*r);$('colorBands').innerHTML+=`<rect x="185" y="${y}" width="50" height="7" rx="3" fill="${colors[i]}" opacity=".9"/>`});
+ $('solventFront').setAttribute('y',195-dist*1.65);
+ $('chromaResult').innerHTML=`พบแถบสีจำลอง <b>${colors.length} แถบ</b><br>ระยะตัวทำละลายมากขึ้น แถบสีมีโอกาสเคลื่อนที่ไกลขึ้น<br><span class="small">องค์ประกอบของหมึกแต่ละชนิดมีจำนวนและระยะเคลื่อนที่ต่างกัน</span>`;
+ drawBars('chromaChart',colors.map((_,i)=>`สี ${i+1}`),vals,100);
+}
+document.querySelectorAll('[data-tab]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-tab]').forEach(x=>{x.classList.toggle('active',x===b);x.classList.toggle('secondary',x!==b);x.setAttribute('aria-selected',x===b?'true':'false')});document.querySelectorAll('.experiment').forEach(s=>s.classList.toggle('hidden',s.id!==b.dataset.tab))}));
+['sand','pore'].forEach(id=>$(id).addEventListener('input',updateFilter));
+['heat','time'].forEach(id=>$(id).addEventListener('input',updateEvap));
+['solvent','ink'].forEach(id=>$(id).addEventListener('input',updateChroma));
+const answers={q1:'a',q2:'b',q3:'c'};
+const explanations={q1:'ถูกต้อง: การกรองใช้แยกของแข็งที่ไม่ละลายในของเหลว เช่น ทรายกับน้ำ',q2:'ถูกต้อง: น้ำระเหยออกจากน้ำเกลือ เหลือเกลือเป็นของแข็ง',q3:'ถูกต้อง: สารสีแต่ละชนิดมีความสามารถในการละลายและยึดติดกับกระดาษต่างกัน จึงเคลื่อนที่ไม่เท่ากัน'};
+$('checkQuiz').addEventListener('click',()=>{let score=0;Object.keys(answers).forEach((q,i)=>{let chosen=document.querySelector(`input[name="${q}"]:checked`),f=$('f'+(i+1));if(chosen&&chosen.value===answers[q]){score++;f.className='feedback good';f.textContent=explanations[q]}else{f.className='feedback bad';f.textContent='ยังไม่ถูกต้อง เฉลย: '+explanations[q]}});$('score').innerHTML=`<b>คะแนนของคุณ ${score}/3 คะแนน</b> — ${score===3?'ยอดเยี่ยม!':score===2?'ทำได้ดี ลองทบทวนอีกเล็กน้อย':'ทบทวนหลักการแต่ละวิธีแล้วลองอีกครั้ง'}`});
+$('resetQuiz').addEventListener('click',()=>{document.querySelectorAll('#quiz input').forEach(x=>x.checked=false);['f1','f2','f3'].forEach(x=>{$(x).textContent='';$(x).className='feedback'});$('score').textContent='คะแนนจะแสดงที่นี่'});
+updateFilter();updateEvap();updateChroma();
+</script>
+</body>
+</html>
